@@ -35,11 +35,11 @@ Telar mantiene abiertas múltiples conexiones al servidor objetivo y envía cabe
 
 ## 🧪 Ejecución
 
-### Opción 1: Modo clásico (parámetros directos)
+Clonar Repositorio, ingresar a la capeta tela y ejecutar:
 
 #Modo Bash
 ---
-python telar/telar.py <host> -p 80 -s 500 --https --verbose
+python telar.py <host> -p80 -s500
 ---
 
 #Modo Inteactivo
