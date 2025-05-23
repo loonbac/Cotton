@@ -49,6 +49,8 @@ python interactivo.py
 -
 
 
+
+
 Telar es una herramienta potencialmente disruptiva. Su uso indebido puede violar leyes locales e internacionales.
 
 ❌ No la utilices contra redes, servidores o servicios que no sean de tu propiedad.
