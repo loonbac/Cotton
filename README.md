@@ -53,6 +53,7 @@ telar/
 ### Opción 1: Modo clásico (parámetros directos)
 
 #Modo Bash
+---
 python telar/telar.py <host> -p 80 -s 500 --https --verbose
 
 #Modo Inteactivo
