@@ -21,7 +21,7 @@
 
 ## 🧠 ¿Cómo funciona?
 
-Telar mantiene abiertas múltiples conexiones al servidor objetivo y envía cabeceras HTTP de forma lenta e incompleta, forzando al servidor a mantener recursos ocupados. Este comportamiento simula una situación de denegación de servicio sin necesidad de tráfico volumétrico.
+Telar mantiene abiertas múltiples conexiones al servidor objetivo y envía cabeceras HTTP de forma lenta e incompleta, forzando al servidor a mantener recursos ocupados. Este comportamiento coloca el host destino en denegación de servicio sin necesidad de tráfico volumétrico.
 
 ---
 
