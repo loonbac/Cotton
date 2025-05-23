@@ -25,21 +25,6 @@ Telar mantiene abiertas múltiples conexiones al servidor objetivo y envía cabe
 
 ---
 
-## 📦 Estructura del Proyecto
-
-telar/
-├── telar.py # Modo clásico (args directos)
-├── interactivo.py # Modo menú interactivo
-├── configuracion.py # Argumentos de línea de comandos
-├── configuracion_json.py # Carga/guardado en JSON
-├── red.py # Conexión y manejo de sockets
-├── logica.py # Ejecución principal
-├── utilidades.py # Métodos auxiliares
-├── config_tel.json # Configuración persistente
-└── logs/metricas_tel.csv # (próximamente) métricas registradas
-
----
-
 ## ⚙️ Requisitos
 
 - Python 3.8 o superior
@@ -55,9 +40,12 @@ telar/
 #Modo Bash
 ---
 python telar/telar.py <host> -p 80 -s 500 --https --verbose
+---
 
 #Modo Inteactivo
+---
 python interactivo.py
+---
 
 
 Telar es una herramienta potencialmente disruptiva. Su uso indebido puede violar leyes locales e internacionales.
@@ -68,6 +56,7 @@ Telar es una herramienta potencialmente disruptiva. Su uso indebido puede violar
 
 ⚖️ El autor y colaboradores no se responsabilizan por el uso indebido de esta herramienta.
 
+---
 
 ⚠️ Descargo de Responsabilidad
 
@@ -79,8 +68,12 @@ Es responsabilidad exclusiva del usuario garantizar que cualquier actividad real
 
 Esta herramienta no debe usarse en producción ni contra infraestructuras reales sin consentimiento explícito.
 
+---
+
 📜 Licencia
 
 Este proyecto está licenciado bajo la MIT License.
 
+---
 Desarrollado por [Walther Curo De La Cruz] -
+---
