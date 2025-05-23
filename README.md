@@ -78,5 +78,5 @@ Esta herramienta no debe usarse en producción ni contra infraestructuras reales
 Este proyecto está licenciado bajo la MIT License.
 
 ---
-Desarrollado por [Walther Curo De La Cruz] -
+Desarrollado por [WC] -
 ---
