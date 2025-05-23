@@ -39,7 +39,7 @@ Clonar Repositorio, ingresar a la capeta telar y ejecutar:
 
 #Modo Bash
 -
-python telar.py <host> -p80 -s500
+python telar.py hostdestino -p80 -s500
 -
 
 
