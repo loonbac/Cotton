@@ -35,7 +35,7 @@ Telar mantiene abiertas múltiples conexiones al servidor objetivo y envía cabe
 
 # 🧪 Ejecución
 
-Clonar Repositorio, ingresar a la capeta tela y ejecutar:
+Clonar Repositorio, ingresar a la capeta telar y ejecutar:
 
 #Modo Bash
 -
