@@ -38,14 +38,15 @@ Telar mantiene abiertas múltiples conexiones al servidor objetivo y envía cabe
 Clonar Repositorio, ingresar a la capeta tela y ejecutar:
 
 #Modo Bash
---
+-
 python telar.py <host> -p80 -s500
---
+-
+
 
 #Modo Inteactivo
---
+-
 python interactivo.py
---
+-
 
 
 Telar es una herramienta potencialmente disruptiva. Su uso indebido puede violar leyes locales e internacionales.
