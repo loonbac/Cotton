@@ -1,6 +1,6 @@
 # Telar – Herramienta DOS mediante estrés HTTP/s
 
-**Telar** es una herramienta modular desarrollada en Python para realizar pruebas de estrés de bajo ancho de banda contra servidores web HTTP/S. Inspirada en el ataque Slowloris, Telar permite evaluar la resiliencia de un servidor ante múltiples conexiones persistentes e incompletas.
+**Telar** es una herramienta desarrollada en Python para realizar pruebas de estrés sobre servidores web HTTP/S. Inspirada en el ataque Slowloris, Telar permite evaluar la resiliencia de un servidor ante múltiples conexiones persistentes e incompletas.
 
 ⚠️ Esta herramienta debe usarse exclusivamente con fines educativos, de investigación o en entornos controlados con autorización explícita.
 
