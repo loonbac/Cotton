@@ -29,7 +29,7 @@ Telar mantiene abiertas múltiples conexiones al servidor objetivo y envía cabe
 
 Clonar el repositorio, ingresar en la carpeta del proyecto y ejecutar:
 
-    python telar.py hostdestino -p80 -s500
+    python telar_shell.py hostdestino -p80 -s500
 
 | Argumento                        | Descripción                                                                 |
 |----------------------------------|-----------------------------------------------------------------------------|
@@ -47,7 +47,7 @@ Clonar el repositorio, ingresar en la carpeta del proyecto y ejecutar:
 ## Ejecución mediante interfaz amigable:
 Clonar el repositorio, ingresar en la carpeta del proyecto y ejecutar:
 
-    python interactivo.py
+    python telar.py
 
 
 ## Importante
