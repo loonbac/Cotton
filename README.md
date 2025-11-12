@@ -5,15 +5,28 @@
 ⚠️ Esta herramienta debe usarse exclusivamente con fines educativos, de investigación o en entornos controlados con autorización explícita.
 
 
-## Características
+Nota: este repositorio es un fork del proyecto original "Telar" (autor: Walther Curo). El fork se denomina "Cotton" y añade compatibilidad para mostrar información en una pantalla conectada por Arduino, además de otras mejoras. Se planea añadir otras funcionalidades extra en próximas versiones.
 
--   ✅ Interfaz CLI interactiva paso a paso
--   ✅ Soporte para:
-    -   HTTPS
-    -   Agentes de usuario aleatorios
-    -   Proxy SOCKS5
--   ✅ Persistencia de configuración (`config_tel.json`)
--   ✅ Registro de métricas (proximamente)
+## Resumen de funcionalidades
+
+- ✅ Interfaz CLI interactiva paso a paso
+- ✅ Soporte para:
+    - HTTPS
+    - Agentes de usuario aleatorios
+    - Proxy SOCKS5
+- ✅ Persistencia de configuración (`config_tel.json`)
+- ✅ Registro de métricas (ahora implementado)
+- ✅ Integración con un display Arduino (opcional)
+
+## Novedades implementadas en Cotton
+
+- Integración con un display Arduino a través del módulo `arduino_display.py`.
+    - Nueva clase `ArduinoDisplay` que se comunica por puerto serie y muestra en la pantalla estado de la ejecución, iteraciones y resumen.
+    - Argumento CLI `--arduino-port` para configurar el puerto serie (por ejemplo `COM3` o `/dev/ttyUSB0`).
+    - Envío en tiempo real de métricas al Arduino (iteraciones, sockets activos, sockets cerrados) desde `metricas.py`.
+    - Persistencia de `arduino_port` en `config_tel.json` (funciones de guardar/cargar actualizadas).
+
+Estas adiciones permiten monitorizar la ejecución en un display físico durante la prueba.
 
 ## ¿Cómo funciona?
 
@@ -21,15 +34,29 @@ Telar mantiene abiertas múltiples conexiones al servidor objetivo y envía cabe
 
 ## Requisitos
 
--   Python 3.8 o superior
--   Recomendado:
-    -   `pysocks`  (`pip install pysocks`)
+- Python 3.8 o superior
+- Dependencias detectadas (mínimo):
+    - `PySocks` (para proxy SOCKS5) — paquete PyPI: `pysocks` o `PySocks`
+    - `pyserial` (para la integración con Arduino)
 
-## Ejecución mediante linea de comandos:
+Recomendación: fijar versiones para reproducibilidad (por ejemplo `PySocks>=1.7.1`, `pyserial>=3.5`).
+
+Contenido del archivo `requirements.txt` actual (estimado):
+
+```
+PySocks
+pyserial
+```
+
+## Ejecución mediante linea de comandos
 
 Clonar el repositorio, ingresar en la carpeta del proyecto y ejecutar:
 
-    python telar_shell.py hostdestino -p80 -s500
+```
+python telar_shell.py hostdestino -p 80 -s 500
+```
+
+Parámetros principales:
 
 | Argumento                        | Descripción                                                                 |
 |----------------------------------|-----------------------------------------------------------------------------|
@@ -37,20 +64,31 @@ Clonar el repositorio, ingresar en la carpeta del proyecto y ejecutar:
 | `-p`, `--port`                  | Puerto del servidor (por defecto: `80`).                                   |
 | `-s`, `--sockets`               | Número de sockets a usar en la prueba (por defecto: `150`).                |
 | `-v`, `--verbose`               | Muestra información detallada en consola.                                  |
-| `-ua`, `--randuseragents`      | Usa un agente de usuario aleatorio por socket (simula múltiples clientes). |
-| `-ue`, `--useproxy`            | Usa un proxy SOCKS5 para conectar los sockets.                             |
-| `--proxy-host`                 | Dirección del proxy SOCKS5 (por defecto: `127.0.0.1`).                      |
-| `--proxy-port`                 | Puerto del proxy SOCKS5 (por defecto: `8080`).                              |
-| `--https`                      | Activa el uso de conexiones seguras (HTTPS).                               |
-| `--sleeptime`                  | Tiempo entre envíos de cabeceras (en segundos, por defecto: `15`).         |
+| `-ua`, `--randuseragents`       | Usa un agente de usuario aleatorio por socket (simula múltiples clientes). |
+| `-ue`, `--useproxy`             | Usa un proxy SOCKS5 para conectar los sockets.                             |
+| `--proxy-host`                  | Dirección del proxy SOCKS5 (por defecto: `127.0.0.1`).                     |
+| `--proxy-port`                  | Puerto del proxy SOCKS5 (por defecto: `8080`).                             |
+| `--https`                       | Activa el uso de conexiones seguras (HTTPS).                               |
+| `--sleeptime`                   | Tiempo entre envíos de cabeceras (en segundos, por defecto: `15`).         |
+| `--arduino-port`                | Puerto serie para conexión al Arduino (ej: `COM3` o `/dev/ttyUSB0`).       |
 
-## Ejecución mediante interfaz amigable:
+## Ejecución mediante interfaz amigable
 Clonar el repositorio, ingresar en la carpeta del proyecto y ejecutar:
 
-    python telar.py
+```
+python telar.py
+```
+
+Si quieres usar el display Arduino, conecta el dispositivo al puerto serie y ejecuta con:
+
+```
+python telar.py --arduino-port COM3
+```
+
+(Asegúrate de instalar `pyserial` antes: `pip install pyserial`.)
 
 
-## Importante
+## Notas importantes y seguridad
 
 Telar es una herramienta de ciberseguridad. Su uso indebido puede violar leyes locales e internacionales:
 
@@ -65,12 +103,16 @@ Este software se proporciona con fines académicos y de prueba. Ni el autor ni l
 
 Es responsabilidad exclusiva del usuario garantizar que cualquier actividad realizada con esta herramienta se encuentra legal y éticamente justificada.
 
-Esta herramienta no debe usarse en producción ni contra infraestructuras reales sin consentimiento explícito
+Esta herramienta no debe usarse en producción ni contra infraestructuras reales sin consentimiento explícito.
 
 
 ## Licencia
 
 Este proyecto está licenciado bajo la MIT License.
 
-## Autor
-Walther Curo
+## Autor y contribuciones
+
+Basado en el proyecto original "Telar" (autor: Walther Curo).
+
+Este repositorio, llamado "Cotton", es un fork que ha sido extendido por LoonBac21 con integración para displays Arduino, mejoras en métricas y otras funcionalidades. Se mantendrán y reconocerán las contribuciones del autor original.
+
