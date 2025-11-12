@@ -9,6 +9,12 @@ iteracion_actual = 0
 suma_cerrados = 0
 suma_nuevos = 0
 suma_duracion = 0.0
+arduino_display = None
+
+def configurar_arduino(display):
+    """Configura la instancia del display Arduino"""
+    global arduino_display
+    arduino_display = display
 
 def iniciar_log_metricas():
     os.makedirs("logs", exist_ok=True)
@@ -31,6 +37,10 @@ def registrar_iteracion(sockets_activos, sockets_cerrados, sockets_nuevos, durac
     )
     with open(ruta_log, "a") as f:
         f.write(mensaje + "\n")
+    
+    # Enviar a Arduino en tiempo real
+    if arduino_display:
+        arduino_display.mostrar_ataque(iteracion_actual, sockets_activos, sockets_cerrados)
 
 def finalizar_log():
     duracion_total = time.time() - inicio_global
@@ -56,4 +66,9 @@ def finalizar_log():
     )
     with open(ruta_log, "a") as f:
         f.write(resumen)
+    
+    # Mostrar resumen en Arduino
+    if arduino_display:
+        arduino_display.mostrar_resumen(iteracion_actual, promedio_cerrados, resistencia)
+    
     return resumen

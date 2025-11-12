@@ -5,10 +5,12 @@ import socket
 import random
 from configuracion import args
 from red import iniciar_socket
-from metricas import iniciar_log_metricas, registrar_iteracion, finalizar_log
+from metricas import iniciar_log_metricas, registrar_iteracion, finalizar_log, configurar_arduino
+from arduino_display import ArduinoDisplay
 
 lista_sockets = []
 ajustes_dinamicos_activados = True
+arduino_display = None
 
 def iteracion_telar():
     logging.info("Enviando encabezados keep-alive...")
@@ -58,12 +60,21 @@ def iteracion_telar():
     logging.debug("🕒 Sleeptime actual: %ds", args.tiempo_espera)
 
 def ejecutar_telar():
+    global arduino_display
+    
     logging.basicConfig(
         format="[%(asctime)s] %(message)s",
         datefmt="%d-%m-%Y %H:%M:%S",
         level=logging.DEBUG if args.verbose else logging.INFO,
     )
 
+    # Inicializar Arduino
+    arduino_display = ArduinoDisplay(args.arduino_port)
+    configurar_arduino(arduino_display)
+    
+    if arduino_display.conectado:
+        arduino_display.mostrar_inicio(args.host, args.sockets)
+    
     iniciar_log_metricas()
     ip = args.host
     logging.info("Atacando %s con %s sockets.", ip, args.sockets)
@@ -81,17 +92,10 @@ def ejecutar_telar():
         while True:
             iteracion_telar()
             time.sleep(args.tiempo_espera)
-    except (KeyboardInterrupt, SystemExit):
-        logging.info("Deteniendo Telar por interrupción del usuario.")
+    except KeyboardInterrupt:
+        logging.info("\n🛑 Ataque interrumpido por el usuario")
+    finally:
         resumen = finalizar_log()
-        print("\n\n📊 RESUMEN FINAL")
         print(resumen)
-    except Exception as e:
-        logging.debug("Error en ejecución Telar: %s", e)
-        resumen = finalizar_log()
-        print("\n\n📊 RESUMEN FINAL")
-        print(resumen)
-    else:
-        resumen = finalizar_log()
-        print("\n\n📊 RESUMEN FINAL")
-        print(resumen)
+        if arduino_display:
+            arduino_display.cerrar()

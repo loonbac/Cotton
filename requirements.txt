@@ -1,0 +1,4 @@
+# requirements.txt generado automáticamente
+# Contiene únicamente dependencias externas (no se listan librerías estándar ni módulos locales).
+PySocks
+pyserial

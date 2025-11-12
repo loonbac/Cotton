@@ -14,7 +14,8 @@ def guardar_configuracion(args):
         "proxy_host": args.proxy_host,
         "proxy_port": args.proxy_port,
         "agente_aleatorio": args.agente_aleatorio,
-        "tiempo_espera": args.tiempo_espera
+        "tiempo_espera": args.tiempo_espera,
+        "arduino_port": args.arduino_port
     }
     with open(CONFIG_ARCHIVO, "w") as f:
         json.dump(datos, f, indent=4)
@@ -35,6 +36,7 @@ def cargar_configuracion(args):
             args.proxy_port = datos.get("proxy_port", 8080)
             args.agente_aleatorio = datos.get("agente_aleatorio", False)
             args.tiempo_espera = datos.get("tiempo_espera", 15)
+            args.arduino_port = datos.get("arduino_port", "COM3")
             print("📂 Configuración cargada desde config_tel.json")
     except Exception as e:
         print(f"⚠️ Error al cargar configuración: {e}")

@@ -14,6 +14,7 @@ parser.add_argument("--proxy-host", default="127.0.0.1", help="Host del proxy SO
 parser.add_argument("--proxy-port", default=8080, type=int, help="Puerto del proxy SOCKS5")
 parser.add_argument("--https", action="store_true", help="Usar HTTPS")
 parser.add_argument("--sleeptime", dest="tiempo_espera", default=15, type=int, help="Tiempo entre encabezados")
+parser.add_argument("--arduino-port", dest="arduino_port", default="COM3", help="Puerto COM del Arduino (ej: COM3, /dev/ttyUSB0)")
 
 parser.set_defaults(verbose=False, agente_aleatorio=False, usar_proxy=False, https=False)
 args = parser.parse_args()
